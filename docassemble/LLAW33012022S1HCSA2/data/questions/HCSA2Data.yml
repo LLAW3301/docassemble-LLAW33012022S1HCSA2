@@ -1,0 +1,34 @@
+---
+# Rent Assistance rates for payments under the Social Security Act 1991
+variable name: RentAssistance
+use objects: true
+data: 
+  - FamilySituation: Single with no children
+    MaximumRent: 145.80
+    RentThreshold: 130.20
+    MinimumRent: 324.60
+  - FamilySituation: Single with no children, sharer
+    MaximumRent: 97.20
+    RentThreshold: 130.20
+    MinimumRent: 259.80
+  - FamilySituation: Couple with no children
+    MaximumRent: 137.40
+    RentThreshold: 210.80
+    MinimumRent: 394.00
+  - FamilySituation: Partnered, illness separated no children
+    MaximumRent: 145.80
+    RentThreshold: 130.20
+    MinimumRent: 324.60
+  - FamilySituation: Partnered, temporarily separated, no children
+    MaximumRent: 137.40
+    RentThreshold: 130.20
+    MinimumRent: 324.60
+  - FamilySituation: Partnered, one or two children (SS Act)
+    MaximumRent: 171.50
+    RentThreshold: 252.70
+    MinimumRent: 481.38
+  - FamilySituation: Partnered, three or more children (SS Act)
+    MaximumRent: 193.62
+    RentThreshold: 252.70
+    MinimumRent: 510.43
+---

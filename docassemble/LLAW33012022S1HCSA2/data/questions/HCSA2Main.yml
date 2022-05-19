@@ -1,0 +1,142 @@
+---
+include: 
+  - HCSA2Data.yml
+---
+objects:
+  - tenants: |
+      DAList.using(
+        object_type=Individual,
+        there_are_any=True)
+---
+# Welcome page
+# this is the welcome page for the rent calculator
+mandatory: True 
+question: Housing Choices South Australia Rent Calculator
+subquestion: |
+   
+   The purpose of this application is to calculate your fortnightly rent payable    and to access additional services if required.
+
+
+   This application currently only applies for people who are receiving Commonwealth Assistance, and reside or are looking to reside with a Housing Choices SA property.
+
+
+   **Disclaimer**
+
+   This application does **not** present legal advice.
+
+   Please answer all following questions honestly.
+
+   This application does not guarantee you will receive a property with HSCA, nor funding or grants from Commonwealth Assistance. It will help you assess the fortnightly rent payable on HCSA properties and give you tips on the next steps.
+
+   *Housing Choices South Australia will make the final decision in regards to all rent payable.*
+
+   We advise you to have a support person while filling out the questions, or to contact Housing Choices South Austraila directly.
+
+   **If you are under 18, you must have a parent or caregiver present while filling out the questions.**
+
+   If you continue, you accept these terms. Explanation of rent calculator and its properties
+
+buttons:
+  - I'm Done: exit
+    url: https://www.housingchoices.org.au/residents/south-australia
+  - Continue to Calculator: continue
+---
+mandatory: True
+question: |
+  Housing
+field: HousingType
+choices: 
+  - Renewing Our Streets and Suburbs: JenRenew
+  - Common Ground: JenCommon
+  
+under:  |
+   Renewing Our Streets and Suburbs, Housing Choices South Australia's tender for afforable housing, calculate rent based on 25% of a households income.
+ 
+   Commonground is another tender by Housing Choices South Australia, rent is based on 30% of the household income.
+---
+mandatory: True
+question: Market Rent
+fields:
+  - What is the Market Rent of the Property: JenPropertyMarketRent
+    datatype: currency
+subquestion:
+ If you are unsure and need help answering this question, press "Help"
+help: |
+ The following [link](https://www.housingchoices.org.au/contact-us-1) will lead you to Housing Choices SA contact details, reach out to a staff member to help understand your properties market rent value. 
+---
+# CMR = Capped Market Rent. Case this section be implemented under the market rent section?
+mandatory: True
+question: |
+ Is rent capped at market rent?
+yesno: JenCMR
+---
+question: |
+  Describe the ${ ordinal(i) } household member and their contributing income.
+fields:
+  - First Name: tenants[i].name.first
+  - Last Name: tenants[i].name.lastn
+  - Date of Birth: tenants[i].birthdate
+    datatype: date
+  - Address: tenants[i].Address
+  - Family Situation: tenants[i].FamilySituation
+    choices:
+    - Single with no children
+    - Single with no children, sharer
+    - Couple with no children
+    - Partnered, illness separated no children
+    - Partnered, temporarily separated, no children
+    - Partnered, one or two children (SS Act)
+    - Partnered, three or more children (SS Act)
+    - None of the above
+  - Family Tax Benefit: tenants[i].TXB
+    datatype: currency
+  - Centrelink Income: tenants[i].CI
+    datatype: currency
+  - Alternate Forms of Income: tenants[i].Alternateincome
+    datatype: currency
+  - Exempt Costs or Payments: tenants[i].Exempt
+    datatype: currency
+    required: false
+ # family situation
+ # rent asssistant changes in letter based on marital situation. Rental Assistant for each user
+ # rent assistant displayed at end
+---
+question: |
+  Are there more household memebers?
+yesno: tenants.there_is_another
+---
+# this is where we are calculating the rent
+# rent is 30% or 25% of user income + 15% of family tax + any rent assistance
+code: |
+  for tenant in tenants:
+   if HousingType == 'JenRenew':
+     TotalIncome = (tenant.CI + tenant.Alternateincome) * 0.25
+   elif HousingType == 'JenCommon':
+     TotalIncome = (tenant.CI + tenant.Alternateincome) * 0.30
+   FTBForRent = tenant.TXB * 0.15
+   CTHRentAssist = 0.0
+   for RentAssistCat in RentAssistance:
+    if tenant.FamilySituation == RentAssistCat['FamilySituation']: 
+     CTHRentAssist = RentAssistCat['MaximumRent']
+   TotalRent = TotalIncome + FTBForRent + CTHRentAssist
+# this is the final screen where we are calculating the rent
+---
+mandatory: true
+question: |
+  Calculated Rent
+subquestion: |
+  % for tenant in tenants:
+  ${ tenant.name.first } ${ tenant.name.lastn }'s born on ${ tenant.birthdate } and living at ${ tenant.Address }.
+  
+  The total rent value for the household is ${ currency(TotalRent) }. 
+  
+  % endfor
+
+buttons:
+  - I'm done: exit
+    url: https://www.housingchoices.org.au/residents/south-australia
+  - Return to Calculator: restart
+# link the exit button or add additional button for a list of financial counselor 
+# Link/List of frequently asked questions
+# final version S2 breakdown of rent, how much each person is paying, iteration function which displays what their rent is composed of
+---
