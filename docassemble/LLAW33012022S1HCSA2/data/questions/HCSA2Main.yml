@@ -9,6 +9,7 @@ objects:
         there_are_any=True)
 ---
 # Welcome page
+# this is the welcome page for the rent calculator
 mandatory: True 
 question: Housing Choices South Australia Rent Calculator
 subquestion: |
