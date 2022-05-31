@@ -1,6 +1,32 @@
 ---
 include: 
   - HCSA2Data.yml
+#Includes the secondary page of data related to rental assistance input.
+---
+metadata:
+  title: Housing Choices South Australia
+  footer: |
+      [CONTACT US](https://www.housingchoices.org.au/contact-us-1)
+      **South Australia**
+      Adelaide
+      192 Waymouth Street,
+      Adelaide South Australia 5000
+    
+      **Phone number**: 1300 312 447
+      
+      **Email**: infosa@hcau.org.au
+---
+features:
+  css: Colours.css
+---
+objects:
+  - HCSAlogo: DAStaticFile.using(filename='HCSA_Logo_White.png')
+---
+mandatory: True
+code: | 
+    HCSAlogostring = '<div class="media"><img src="{}" class="mr-8" height="65"><div class="media-body"></div></div>'.format(HCSAlogo.url_for())
+    
+    set_parts(logo= HCSAlogostring)
 ---
 objects:
   - tenants: |
@@ -8,76 +34,95 @@ objects:
         object_type=Individual,
         there_are_any=True)
 ---
-# Welcome page
-# this is the welcome page for the rent calculator
+# Welcome page introduced Housing Choices SA, the rental calculator and its basic functionality and includes disclamers for non legal use. 
+
 mandatory: True 
-question: Housing Choices South Australia Rent Calculator
+question: RENT CALCULATOR
 subquestion: |
    
-   The purpose of this application is to calculate your fortnightly rent payable    and to access additional services if required.
+   The purpose of this application is to calculate your rent payable based on income and to access additional services if required. This application is for users who are residing or looking to reside in a Housing Choices SA property.
 
-
-   This application currently only applies for people who are receiving Commonwealth Assistance, and reside or are looking to reside with a Housing Choices SA property.
-
-
+under: |
    **Disclaimer**
 
-   This application does **not** present legal advice.
+   This application does **not** provide legal advice.
 
-   Please answer all following questions honestly.
+   Please answer all of the following accurately.
+   
+   This application does not guarantee you will receive a tenancy with Housing Choices SA, nor does it guarantee Commonwealth funding or grants. This application will help you assess the fortnightly rent payable on Housing Choices SA properties and provide guidence on the next steps.
 
-   This application does not guarantee you will receive a property with HSCA, nor funding or grants from Commonwealth Assistance. It will help you assess the fortnightly rent payable on HCSA properties and give you tips on the next steps.
-
-   *Housing Choices South Australia will make the final decision in regards to all rent payable.*
-
-   We advise you to have a support person while filling out the questions, or to contact Housing Choices South Austraila directly.
-
-   **If you are under 18, you must have a parent or caregiver present while filling out the questions.**
-
-   If you continue, you accept these terms. Explanation of rent calculator and its properties
+   *Housing Choices SA will make the final decision in regards to amounts of rents payable.* We advise you contact Housing Choices SA directly if you have further questions.
+      
+      If you continue, you accept the above terms. 
+      
+    The rent calculator is a tool for users residing in Housing Choices SA properties. It calculates income based on fornightly rent payable by collecting the user's input regarding housing type, market rent and household income for each household member. The formulas used to calculate rent are sourced from the SA Housing Authority's *Rent policy*.
+    
+   [FILE BG.png, 200%]
 
 buttons:
-  - I'm Done: exit
+  - I'm done: exit
     url: https://www.housingchoices.org.au/residents/south-australia
-  - Continue to Calculator: continue
+  - Continue to calculator: continue
+
+# how to make them aline?
 ---
+# The users selectoion will indicate whether 25% or 30% of their inputs will go towards their income, and identify the type of property option they have chosen with HCSA.
+# Need to change name for Common Ground Property.
+# More options may need to be added based on Mark's feedback
 mandatory: True
 question: |
-  Housing
+  Housing Type
 field: HousingType
 choices: 
-  - Renewing Our Streets and Suburbs: JenRenew
-  - Common Ground: JenCommon
+  - Community Housing Property: JenRenew  
+  - Common Ground, Spence on Light, Shannon Place and Crowther St: JenCommon
   
 under:  |
-   Renewing Our Streets and Suburbs, Housing Choices South Australia's tender for afforable housing, calculate rent based on 25% of a households income.
+   Community Housing Property is a type of Housing Choices SA's property for affordable housing which calculates rent based on **25%** of a household's income.
  
-   Commonground is another tender by Housing Choices South Australia, rent is based on 30% of the household income.
+   Common Ground is another option property option provided by Housing Choices SA, where rent is based on **30%** of household income.
 ---
+# This section...
+# The additional 'help' button allows users to gain help from HCSA to identify the market rent of their property.
 mandatory: True
 question: Market Rent
 fields:
-  - What is the Market Rent of the Property: JenPropertyMarketRent
+  - What is the market rent of the property?: JenPropertyMarketRent
     datatype: currency
+  - Current date: Current_date
+    datatype: date
 subquestion:
- If you are unsure and need help answering this question, press "Help"
+ If you are unsure and need help answering this question, press, 'Help'
 help: |
- The following [link](https://www.housingchoices.org.au/contact-us-1) will lead you to Housing Choices SA contact details, reach out to a staff member to help understand your properties market rent value. 
+ The following [link](https://www.housingchoices.org.au/contact-us-1) will lead you to Housing Choices South Australia contact details, reach out to a staff member to help understand your properties market rent value. 
 ---
-# CMR = Capped Market Rent. Case this section be implemented under the market rent section?
+# If the user selects 'yes' this section of code will identify the final rent outcome and detect the differences between that and the capped market rent from the previous section. If it is identified that the rent is higher it will be reduced to capped rent. 
+# the rent will also be altered based on family situation as this alters the rental assistence they will receive.
+# could aim to display the amount of rental assistance the user will receive as they complete the input. 
 mandatory: True
 question: |
  Is rent capped at market rent?
 yesno: JenCMR
 ---
 question: |
-  Describe the ${ ordinal(i) } household member and their contributing income.
+  Describe the ${ ordinal(i) } household member and their contributing income
 fields:
   - First Name: tenants[i].name.first
   - Last Name: tenants[i].name.lastn
   - Date of Birth: tenants[i].birthdate
     datatype: date
-  - Address: tenants[i].Address
+  - Street Address: tenants[i].Address
+    hint: e.g., 26 Student Street
+  - Suburb: tenants[i].Suburb
+  - State: tenants[i].State
+    choices: 
+    - South Australia
+    help: |
+      Please be aware this tool is only applicable to **South Australian residents** looking to reside with Housing Choices SA.
+  - Postcode: tenants[i].Postcode
+    datatype: integer
+    min: 1000
+    max: 9999
   - Family Situation: tenants[i].FamilySituation
     choices:
     - Single with no children
@@ -94,18 +139,32 @@ fields:
     datatype: currency
   - Alternate Forms of Income: tenants[i].Alternateincome
     datatype: currency
-  - Exempt Costs or Payments: tenants[i].Exempt
-    datatype: currency
-    required: false
- # family situation
- # rent asssistant changes in letter based on marital situation. Rental Assistant for each user
- # rent assistant displayed at end
+    help: |
+      **Alternate Forms of Income** includes income not sourced from wages or salaries. 
+
+subquestion: 
+ If you are unsure and need help answering these questions, press, 'Help'
+
+help: |
+ **Family Tax Benefit**
+ 
+ 15% of your family tax benefit is used to formulate your family tax benefit, to identify what the amount may be for you and your particular family situation please head to the following [link](https://www.servicesaustralia.gov.au/family-tax-benefit).
+  
+  **Centrelink Income**
+  
+ To better understand the forms of centrelink income you may be receiving or entitled to, please head to the following [link](https://www.servicesaustralia.gov.au/centrelink?context=1).
+ 
+ **Housing Choices SA**
+ 
+ The following [link](https://www.housingchoices.org.au/contact-us-1) will lead you to Housing Choices South Australia contact details, reach out to a staff member to better understand all aspects of how rent is calculated. 
+
 ---
+# this function allows users to imput the remaining household memebers information to also calculate their income.
 question: |
   Are there more household memebers?
 yesno: tenants.there_is_another
 ---
-# this is where we are calculating the rent
+# the following function calcualtes the rent based on the users input.
 # rent is 30% or 25% of user income + 15% of family tax + any rent assistance
 code: |
   for tenant in tenants:
@@ -118,25 +177,48 @@ code: |
    for RentAssistCat in RentAssistance:
     if tenant.FamilySituation == RentAssistCat['FamilySituation']: 
      CTHRentAssist = RentAssistCat['MaximumRent']
-   TotalRent = TotalIncome + FTBForRent + CTHRentAssist
-# this is the final screen where we are calculating the rent
+   tenant.TotalRent = TotalIncome + FTBForRent + CTHRentAssist
+   tenant.TotalRentFortnightly = TotalRent * 2.0
 ---
 mandatory: true
+event: download
 question: |
   Calculated Rent
 subquestion: |
   % for tenant in tenants:
-  ${ tenant.name.first } ${ tenant.name.lastn }'s born on ${ tenant.birthdate } and living at ${ tenant.Address }.
+  ${ tenant.name.first } ${ tenant.name.lastn }, residing at ${ tenant.Address }, ${ tenant.Suburb }, ${ tenant.State } ${ tenant.Postcode } has a total rent based income of:
   
-  The total rent value for the household is ${ currency(TotalRent) }. 
+  ${ currency(tenant.TotalRent) } Weekly
   
+  ${ currency(tenant.TotalRentFortnightly) } Fortnightly
+
   % endfor
+
+under: |
+ If you would like further assistance please **contact us** on:
+ 
+ Call: 1300 312 447
+ 
+ Email: infosa@hcau.org.au
+ 
+ The following [link](https://www.syc.net.au/home/rentrightsa/) directs you to Rent Right SA to better help you issues relating to tenancy.
+
+ ${ rent_attachment }
+attachment code: rent_attachment
 
 buttons:
   - I'm done: exit
     url: https://www.housingchoices.org.au/residents/south-australia
   - Return to Calculator: restart
-# link the exit button or add additional button for a list of financial counselor 
+# This is the final screen where we are calculating the rent is produced and displayed 
+# The exist button is linked to HCSA website to provide more infromation for the user. 
+
+# An additional button will provide options for financial counselors.
+# Adding additional help buttons for alternate sections where users may need more infromation.
 # Link/List of frequently asked questions
 # final version S2 breakdown of rent, how much each person is paying, iteration function which displays what their rent is composed of
+---
+attachment: 
+  docx template file: Rent_V.2.docx
+  variable name: rent_attachment
 ---
