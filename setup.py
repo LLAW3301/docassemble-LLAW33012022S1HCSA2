@@ -44,8 +44,8 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 
 setup(name='docassemble.LLAW33012022S1HCSA2',
       version='0.0.1',
-      description=('31st May Edits '),
-      long_description='# docassemble.LLAW33012022S1HCSA2\r\nrent calculator for housing choices SA\r\n\r\n## author\r\nJennifer Mascrenhas (masc0027@flinders.edu.au)',
+      description=('FINAL VERSION'),
+      long_description='# docassemble.LLAW33012022S1HCSA2\r\nRent Calculator for Housing Choices SA\r\n\r\n## author\r\nJennifer Mascrenhas (masc0027@flinders.edu.au)',
       long_description_content_type='text/markdown',
       author='Jen Mascrenhas',
       author_email='masc0027@flinders.edu.au',

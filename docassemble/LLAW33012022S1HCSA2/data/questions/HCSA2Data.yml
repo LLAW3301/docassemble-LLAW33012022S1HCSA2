@@ -1,34 +1,50 @@
 ---
-# Rent Assistance rates for payments under the Social Security Act 1991
+# Rent Assistance rates for payments under the Social Security Act 1991 and New Tax System (Family Assistanct) Act 1999
 variable name: RentAssistance
 use objects: true
 data: 
   - FamilySituation: Single with no children
-    MaximumRent: 145.80
-    RentThreshold: 130.20
-    MinimumRent: 324.60
+    MaximumRent: 72.90
+    RentThreshold: 65.10
+    MinimumRent: 162.30
   - FamilySituation: Single with no children, sharer
-    MaximumRent: 97.20
-    RentThreshold: 130.20
-    MinimumRent: 259.80
+    MaximumRent: 48.60
+    RentThreshold: 65.10
+    MinimumRent: 129.90
   - FamilySituation: Couple with no children
-    MaximumRent: 137.40
-    RentThreshold: 210.80
-    MinimumRent: 394.00
+    MaximumRent: 68.70
+    RentThreshold: 105.40
+    MinimumRent: 197.00
   - FamilySituation: Partnered, illness separated no children
-    MaximumRent: 145.80
-    RentThreshold: 130.20
-    MinimumRent: 324.60
+    MaximumRent: 72.90
+    RentThreshold: 65.10
+    MinimumRent: 162.30
   - FamilySituation: Partnered, temporarily separated, no children
-    MaximumRent: 137.40
-    RentThreshold: 130.20
-    MinimumRent: 324.60
+    MaximumRent: 68.70
+    RentThreshold: 65.10
+    MinimumRent: 162.30
   - FamilySituation: Partnered, one or two children (SS Act)
-    MaximumRent: 171.50
-    RentThreshold: 252.70
-    MinimumRent: 481.38
+    MaximumRent: 85.75
+    RentThreshold: 126.35
+    MinimumRent: 240.69
+  - FamilySituation: Single, one or two children
+    MaximumRent: 85.75
+    RentThreshold: 85.47
+    MinimumRent: 199.81
   - FamilySituation: Partnered, three or more children (SS Act)
-    MaximumRent: 193.62
-    RentThreshold: 252.70
-    MinimumRent: 510.43
+    MaximumRent: 96.81
+    RentThreshold: 126.35
+    MinimumRent: 255.22
+  - FamilySituation: Single, three or more children
+    MaximumRent: 96.81
+    RentThreshold: 85.47
+    MinimumRent: 214.55
+  - FamilySituation: Couple separated - one or two children
+    MaximumRent: 85.75
+    RentThreshold: 85.47
+    MinimumRent: 199.81
+  - FamilySituation: Couple separated - three or more children
+    MaximumRent: 96.81
+    RentThreshold: 126.35
+    MinimumRent: 214.55
 ---

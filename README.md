@@ -1,5 +1,5 @@
 # docassemble.LLAW33012022S1HCSA2
-rent calculator for housing choices SA
+Rent Calculator for Housing Choices SA
 
 ## author
 Jennifer Mascrenhas (masc0027@flinders.edu.au)
